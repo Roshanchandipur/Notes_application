@@ -1,11 +1,14 @@
+package com.example.mynotes
+
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlin.reflect.KClass
 
 @Entity(tableName = "notes_table")
-data class Notes(
+class Notes(
+    @ColumnInfo(name = "notes") val notes: String
+){
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val notes: String
-
-)
+    var id: Int = 0
+}
