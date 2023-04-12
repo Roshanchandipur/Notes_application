@@ -30,6 +30,6 @@ class MainActivity : AppCompatActivity(), ItemClickedI {
     }
     fun add(){
         val editText = findViewById<EditText>(R.id.man_ki_baat)
-        viewModel.insert(Notes(0,editText.text.toString()))
+        viewModel.insert(Notes(editText.text.toString()))
     }
 }
