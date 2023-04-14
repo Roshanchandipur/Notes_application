@@ -2,6 +2,7 @@ package com.example.mynotes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity(), ItemClickedI {
     override fun onItemClicked(note: Notes) {
         viewModel.change(note)
     }
-    fun add(){
+    fun add(view: View){
         val editText = findViewById<EditText>(R.id.man_ki_baat)
         viewModel.insert(Notes(editText.text.toString()))
     }

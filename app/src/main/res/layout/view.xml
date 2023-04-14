@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:padding="8dp"
-        android:src="@drawable/baseline_delete_24"
+        android:src="@drawable/baseline_delete_outline_24"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
