@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 
 @Entity(tableName = "notes_table")
 class Notes(
-    @ColumnInfo(name = "notes") val notes: String
+    @ColumnInfo(name = "notes") var notes: String
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

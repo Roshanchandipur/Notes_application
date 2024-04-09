@@ -1,9 +1,12 @@
 package com.example.mynotes
 
 import android.content.Context
+import android.media.Image
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +23,32 @@ class NotesAdapter(val context: Context, val onItemClick: ItemClickedI): Recycle
     override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
         holder.text.text = list[position].notes
         holder.deleteButton.setOnClickListener{
-            onItemClick.onItemClicked(list[position])
+            onItemClick.onDelete(list[position])
+        }
+        holder.addButton.setOnClickListener{
+            holder.text.visibility = View.VISIBLE
+            val text = holder.editText.text.toString()
+            holder.editText.setText("")
+            holder.editText.visibility = View.GONE
+            holder.editButton.visibility = View.VISIBLE
+            holder.addButton.visibility = View.GONE
+            holder.deleteButton.visibility = View.VISIBLE
+            list[position].notes = text
+            onItemClick.onEdit(list[position])
+            onItemClick.onUpdateUnlockAdd()
+        }
+        holder.editButton.setOnClickListener{
+//            holder.text.isEnabled = false
+            holder.text.visibility = View.GONE
+            holder.editText.setText(list[position].notes)
+            holder.editText.visibility = View.VISIBLE
+
+            holder.editButton.visibility = View.GONE
+            holder.addButton.visibility = View.VISIBLE
+            holder.deleteButton.visibility = View.GONE
+            holder.editText.requestFocus()
+            onItemClick.onEditLockAdd()
+
         }
     }
 
@@ -38,8 +66,14 @@ class NotesAdapter(val context: Context, val onItemClick: ItemClickedI): Recycle
 class NotesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val text = itemView.findViewById<TextView>(R.id.text)
     val deleteButton = itemView.findViewById<ImageView>(R.id.delete)
+    val editButton = itemView.findViewById<ImageView>(R.id.editNotes)
+    val editText = itemView.findViewById<EditText>(R.id.editText)
+    val addButton = itemView.findViewById<ImageView>(R.id.add)
 }
 
 interface ItemClickedI {
-    fun onItemClicked(note: Notes)
+    fun onDelete(note: Notes)
+    fun onEdit(note: Notes)
+    fun onEditLockAdd()
+    fun onUpdateUnlockAdd()
 }

@@ -22,6 +22,10 @@ class NotesViewModel(application: Application): AndroidViewModel(application) {
         repo.delete(note)
     }
 
+    fun edit(note: Notes) = viewModelScope.launch(Dispatchers.IO){
+        repo.update(note)
+    }
+
     init {
         val database = NotesDatabase.getDatabaseInstance(application)
         val noteDao = database.notesDAO()

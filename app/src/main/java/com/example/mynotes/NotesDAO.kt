@@ -17,4 +17,6 @@ interface NotesDAO {
     @Query("SELECT * FROM notes_table ORDER BY id desc")
     fun getNotes() : LiveData<List<Notes>>
 
+    @Update
+    suspend fun updateNote(note: Notes)
 }

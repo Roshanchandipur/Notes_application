@@ -1,6 +1,7 @@
 package com.example.mynotes
 
 import androidx.lifecycle.LiveData
+import androidx.room.Update
 
 class NotesRepo(private val notesDao: NotesDAO) {
 
@@ -11,6 +12,11 @@ class NotesRepo(private val notesDao: NotesDAO) {
     }
     suspend fun delete(note: Notes){
         notesDao.deleteNotes(note)
+    }
+
+    @Update
+    suspend fun update(note: Notes){
+        notesDao.updateNote(note);
     }
 
 }
