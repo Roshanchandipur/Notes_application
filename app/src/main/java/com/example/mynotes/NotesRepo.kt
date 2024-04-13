@@ -5,7 +5,7 @@ import androidx.room.Update
 
 class NotesRepo(private val notesDao: NotesDAO) {
 
-    val allNotes: LiveData<List<Notes>> = notesDao.getNotes()
+    val allNotes: LiveData<List<Notes>> = notesDao.getNotesLiveData()
 
     suspend fun insert(note: Notes){
         notesDao.insertIntoNotes(note)
@@ -18,5 +18,7 @@ class NotesRepo(private val notesDao: NotesDAO) {
     suspend fun update(note: Notes){
         notesDao.updateNote(note);
     }
-
+    suspend fun getNotes(): List<Notes>{
+        return notesDao.getNotesList()
+    }
 }

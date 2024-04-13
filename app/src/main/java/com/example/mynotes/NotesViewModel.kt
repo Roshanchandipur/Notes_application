@@ -23,6 +23,9 @@ class NotesViewModel(application: Application): AndroidViewModel(application) {
     fun edit(note: Notes) = viewModelScope.launch(Dispatchers.IO){
         repo.update(note)
     }
+    suspend fun getAllNotes(): List<Notes>{
+        return repo.getNotes()
+    }
 
     init {
         val database = NotesDatabase.getDatabaseInstance(application)
@@ -30,6 +33,4 @@ class NotesViewModel(application: Application): AndroidViewModel(application) {
         repo = NotesRepo(noteDao)
         allNotes = repo.allNotes
     }
-
-
 }

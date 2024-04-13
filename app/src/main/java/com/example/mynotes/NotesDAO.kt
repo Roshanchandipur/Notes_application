@@ -15,7 +15,10 @@ interface NotesDAO {
     suspend fun deleteNotes(notes: Notes)
 
     @Query("SELECT * FROM notes_table ORDER BY id desc")
-    fun getNotes() : LiveData<List<Notes>>
+    fun getNotesLiveData() : LiveData<List<Notes>>
+
+    @Query("SELECT * FROM notes_table ORDER BY id desc")
+    suspend fun getNotesList() : List<Notes>
 
     @Update
     suspend fun updateNote(note: Notes)

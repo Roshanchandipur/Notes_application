@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/cloud"
+    tools:context=".CloudService">
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@id/welcomeMsg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline2" />
+
+    <TextView
+        android:id="@+id/welcomeMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manage all your cloud service here"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/white"
+        android:text="Upload to Cloud"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline2" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/white"
+        android:text="Delete from Cloud"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/feedback"
+        app:layout_constraintLeft_toRightOf="@id/guideline2"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/feedback"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/white"
+        android:text="Give a note to developer"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintLeft_toRightOf="@id/guideline2"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+    <Button
+        android:id="@+id/syncWithCloud"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/white"
+        android:text="Sync with cloud"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/uploadButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/white"
+        android:text="Logout"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/welcomeMsg"
+        app:layout_constraintLeft_toRightOf="@id/guideline2"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="576dp" />
+
+    <ImageView
+        android:id="@+id/userImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/baseline_edit_note_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/welcomeMsg" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

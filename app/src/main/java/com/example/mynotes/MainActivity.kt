@@ -1,5 +1,6 @@
 package com.example.mynotes
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -57,6 +58,8 @@ class MainActivity : AppCompatActivity(), ItemClickedI {
         addButton.isClickable = true
         addButton.alpha = 1f
     }
-    fun moreOptions(){
+    fun moreOptions(view: View){
+        val intent = Intent(this, CloudService::class.java)
+        startActivity(intent)
     }
 }
