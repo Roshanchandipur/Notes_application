@@ -8,7 +8,12 @@ class NotesRepo(private val notesDao: NotesDAO) {
     val allNotes: LiveData<List<Notes>> = notesDao.getNotesLiveData()
 
     suspend fun insert(note: Notes){
-        notesDao.insertIntoNotes(note)
+        val n = HashSet<String>()
+        val l = getNotes()
+        for(n1 in l)
+            n.add(n1.notes)
+        if(!n.contains(note.notes))
+            notesDao.insertIntoNotes(note)
     }
     suspend fun delete(note: Notes){
         notesDao.deleteNotes(note)
@@ -16,7 +21,12 @@ class NotesRepo(private val notesDao: NotesDAO) {
 
     @Update
     suspend fun update(note: Notes){
-        notesDao.updateNote(note);
+        val n = HashSet<String>()
+        val l = getNotes()
+        for(n1 in l)
+            n.add(n1.notes)
+        if(!n.contains(note.notes))
+            notesDao.updateNote(note)
     }
     suspend fun getNotes(): List<Notes>{
         return notesDao.getNotesList()

@@ -27,14 +27,9 @@ class DAO_() {
     fun uploadToCloud(list: List<Notes>) {
 
         var l = ArrayList<String>()
-
         list.forEach{
             n-> l.add(n.notes)
         }
-        Log.d("listLength", l.size.toString())
-        if(l.size==0)
-            l.add("nothing is there")
-
         firebaseDatabase.getReference().child("users").child(user.uid).child("notes")
             .setValue(l)
     }
@@ -44,7 +39,7 @@ class DAO_() {
             .removeValue()
     }
 
-    fun getNotesFromCloudDB(callback: (List<String>)-> Unit){
+    fun getNotesFromCloudDB(callback: (ArrayList<String>)-> Unit){
         val n = firebaseDatabase.getReference().child("users").child(user.uid).child("notes")
         val valueEventListener = object : ValueEventListener {
             var notes = ArrayList<String>()
@@ -53,6 +48,7 @@ class DAO_() {
                     if (data != null)
                         notes.add(data.getValue(String::class.java)!!)
                 }
+                callback(notes)
             }
 
             override fun onCancelled(error: DatabaseError) {
