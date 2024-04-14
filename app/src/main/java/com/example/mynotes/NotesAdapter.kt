@@ -46,7 +46,6 @@ class NotesAdapter(val context: Context, val onItemClick: ItemClickedI): Recycle
             holder.deleteButton.visibility = View.GONE
             holder.editText.requestFocus()
             onItemClick.onEditLockAdd()
-
         }
     }
 

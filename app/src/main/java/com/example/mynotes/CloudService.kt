@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -17,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -27,7 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class CloudService : AppCompatActivity() {
+class CloudService : AppCompatActivity(){
 
     lateinit var signInButton: com.google.android.gms.common.SignInButton
     lateinit var firebaseAuth: FirebaseAuth
@@ -42,8 +45,8 @@ class CloudService : AppCompatActivity() {
     lateinit var userImage: ImageView
     lateinit var welcomeText: TextView
     lateinit var logoutButton: Button
+    lateinit var msg: EditText
     lateinit var msgToMe: Button
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +55,13 @@ class CloudService : AppCompatActivity() {
         signInButton = findViewById(R.id.sign_in_button)
         uploadButton = findViewById(R.id.uploadButton)
         deleteButton = findViewById(R.id.deleteButton)
-        syncWithCloud = findViewById(R.id.syncWithCloud)
-        msgToMe = findViewById(R.id.feedback)
+        syncWithCloud = findViewById(R.id.syncButton)
+        msgToMe = findViewById(R.id.sendButton)
         userImage = findViewById(R.id.userImage)
         welcomeText = findViewById(R.id.welcomeMsg)
+
         logoutButton = findViewById(R.id.logout)
+        msg = findViewById(R.id.msgToMe)
 
         firebaseAuth = Firebase.auth
         firebaseDatabase = FirebaseDatabase.getInstance()
@@ -86,13 +91,27 @@ class CloudService : AppCompatActivity() {
         }
 
         deleteButton.setOnClickListener {
-            deleteFromCloud()
+            showDeleteConfirmationDialog()
         }
         syncWithCloud.setOnClickListener {
-            Log.d("cloud started", "sync button clicked")
+
             GlobalScope.launch(Dispatchers.IO) {
                 dataRepo.syncWithCloud()
             }
+            print("Updated your notes with cloud")
+        }
+        msgToMe.setOnClickListener {
+            sendMsgToDeveloper()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(firebaseAuth.currentUser!=null){
+            updateUISignedInFlow()
+            val database = NotesDatabase.getDatabaseInstance(application)
+            val noteDao = database.notesDAO()
+            dataRepo = DataRepo(noteDao)
         }
     }
 
@@ -119,11 +138,13 @@ class CloudService : AppCompatActivity() {
 
     private suspend fun upload() {
         dataRepo.uploadToCloud()
+        print("Uploaded to cloud")
     }
 
 
     private fun deleteFromCloud() {
         dataRepo.deleteFromCloud()
+        print("Deleted from cloud")
     }
 
     private fun firebaseAuth(token: String) {
@@ -138,19 +159,15 @@ class CloudService : AppCompatActivity() {
 
                     m.put("pic", user.photoUrl.toString())
                     firebaseDatabase.getReference().child("users").child(user.getUid()).setValue(m)
-                    Toast.makeText(this, "You have signed in", Toast.LENGTH_SHORT).show()
+                    print("You are now signed in")
                     updateUISignedInFlow()
 
                     val database = NotesDatabase.getDatabaseInstance(application)
                     val noteDao = database.notesDAO()
                     dataRepo = DataRepo(noteDao)
 
-//                    val intent1 = Intent(this, MainActivity::class.java)
-//                    startActivity(intent1)
-
                 } else {
-                    Toast.makeText(this, "SignIn failed", Toast.LENGTH_SHORT).show()
-                    // signin failed
+                    print("Your sign in request failed, plz try again")
                 }
             }
             .addOnCanceledListener {
@@ -158,38 +175,25 @@ class CloudService : AppCompatActivity() {
             }
     }
 
-    private fun loginUser() {
-        signInButton.alpha = 1f
-
-
-    }
-
     private fun updateUILoginFlow() {
-        syncWithCloud.alpha = 0.5f
-        deleteButton.alpha = 0.5f
-        uploadButton.alpha = 0.5f
-        msgToMe.alpha = 0.5f
-        logoutButton.alpha = 0.5f
-        userImage.visibility = View.GONE
+        logoutButton.visibility = View.GONE
 
         syncWithCloud.isClickable = false
         deleteButton.isClickable = false
         uploadButton.isClickable = false
         msgToMe.isClickable = false
-        logoutButton.isClickable = false
 
         signInButton.alpha = 1f
         signInButton.isClickable = true
+        signInButton.visibility = View.VISIBLE
 
-        welcomeText.setText("Manage all your cloud services here")
+        Glide.with(this).clear(userImage)
+        welcomeText.setText("Sign in to manage all your cloud services here")
     }
 
+
+
     private fun updateUISignedInFlow() {
-        syncWithCloud.alpha = 1f
-        deleteButton.alpha = 1f
-        uploadButton.alpha = 1f
-        msgToMe.alpha = 1f
-        logoutButton.alpha = 1f
         userImage.visibility = View.VISIBLE
 
         val requestOptions: RequestOptions = RequestOptions()
@@ -206,10 +210,11 @@ class CloudService : AppCompatActivity() {
         deleteButton.isClickable = true
         uploadButton.isClickable = true
         msgToMe.isClickable = true
+        logoutButton.visibility = View.VISIBLE
         logoutButton.isClickable = true
 
-        signInButton.alpha = 0.5f
-        signInButton.isClickable = false
+        signInButton.visibility = View.GONE
+
 
         welcomeText.setText(firebaseAuth.currentUser!!.displayName.toString() + ", Manage all your cloud services here")
     }
@@ -217,5 +222,42 @@ class CloudService : AppCompatActivity() {
     private fun logoutUser() {
         firebaseAuth.signOut()
         updateUILoginFlow()
+        print("You are now signed out")
+    }
+
+    fun print(item: String) {
+        Toast.makeText(this, item, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDeleteConfirmationDialog(){
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.apply {
+            setTitle("Delete")
+            setMessage("Are you sure you want to delete entire cloud data?")
+            setCancelable(true)
+            setPositiveButton("Delete"){
+                    dialog, _ ->
+                deleteFromCloud()
+                dialog.dismiss()
+            }
+            setNegativeButton("Cancel"){
+                    dialog, _ ->
+                dialog.dismiss()
+            }
+        }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
+    private fun sendMsgToDeveloper(){
+        var note = msg.text.toString()
+        if(note.isEmpty()){
+            print("Your note is empty")
+            return
+        }
+        note = firebaseAuth.currentUser!!.displayName + " sent you, " + note
+        firebaseDatabase.getReference().child("users").child(firebaseAuth.currentUser!!.uid).child("msgToMe").setValue(note)
+        msg.setText("")
+        
+        print("Roshan will get your note soon...")
     }
 }
