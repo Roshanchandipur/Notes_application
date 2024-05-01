@@ -37,8 +37,8 @@ This Android application provides a user-friendly and feature-rich platform for 
 
 1. Tap the "<strong style="font-size: 1.2em;">Add Note</strong>" button to create a new note.
 2. Enter your note content in the text field.
-3. (Optional) Edit existing notes by tapping on them and modifying the content.
-4. Delete notes by swiping left on the note in the list or by tapping the "<strong style="font-size: 1.2em;">Delete</strong>" button within the note.
+3. (Optional) Edit existing notes by tapping the edit button on them and modifying the content.
+4. Delete notes by tapping the "<strong style="font-size: 1.2em;">Delete</strong>" button within the note.
 
 **Cloud Integration (with Google Sign-in):**
 
