@@ -43,10 +43,9 @@ This Android application provides a user-friendly and feature-rich platform for 
 **Cloud Integration (with Google Sign-in):**
 
 1. Sign in with your Google account.
-2. Upload notes to the cloud by tapping the "<strong style="font-size: 1.2em;">Upload</strong>" button within a note.
-3. Delete all notes stored in the cloud by accessing the dedicated cloud management section (implementation details may vary).
-4. Enable automatic synchronization between your device and the cloud (implementation details may vary).
-5. Share a specific note with the developer by tapping the "<strong style="font-size: 1.2em;">Send to Developer</strong>" button within a note.
+2. Upload notes to the cloud by tapping the "<strong style="font-size: 1.2em;">Sync with cloud</strong>".
+3. Delete all notes stored in the cloud by accessing tapping the Delete from cloud button in the cloud services page.
+4. Share a specific note with the developer by tapping the "<strong style="font-size: 1.2em;">Send to Developer</strong>".
 
 
 ### Additional Notes
