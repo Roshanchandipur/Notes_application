@@ -20,7 +20,7 @@ This Android application provides a user-friendly and feature-rich platform for 
 
 ### Requirements
 
-* Android device running **[Android version supported by your app]** or later.
+* Android device running version 8 or later.
 * Google account (optional, required for cloud features).
 
 
